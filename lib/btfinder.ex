@@ -12,6 +12,13 @@ defmodule BTFinder do
     Cache.put({:entry, id, type, meta}, time)
   end
 
+  @doc """
+  Log event for start time
+  """
+  def log(id, type, meta, start_ts) do
+    log_time(id, type, meta, :erlang.system_time(:millisecond) - start_ts)
+  end
+
   @entry_select (fun do
                    {{:entry, _, _, _}, _} = entry -> entry
                  end)

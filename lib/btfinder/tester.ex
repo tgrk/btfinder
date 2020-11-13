@@ -17,7 +17,6 @@ defmodule BTFinder.Tester do
     start_ts = :erlang.system_time(:millisecond)
     sleep_time = :crypto.rand_uniform(from, to)
     :timer.sleep(sleep_time)
-    end_ts = :erlang.system_time(:millisecond)
-    BTFinder.log_time(id, type, meta, end_ts - start_ts)
+    BTFinder.log(id, type, meta, start_ts)
   end
 end
