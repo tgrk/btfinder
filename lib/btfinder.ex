@@ -65,12 +65,15 @@ defmodule BTFinder do
           []
 
         time2 ->
-          diff_factor = if time1 > time2, do: time1 / time2, else: time2 / time1
+          diff_factor = if time1 > time2, do: time1 / safe(time2), else: time2 / safe(time1)
           [{key, diff_factor}]
       end
     end)
     |> Enum.sort_by(&elem(&1, 1), &>=/2)
   end
+
+  defp safe(value) when value == 0, do: 1
+  defp safe(value), do: value
 
   @result_select (fun do
                     {{:result, time}, _} = entry -> {:result, time}
