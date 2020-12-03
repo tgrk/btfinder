@@ -50,6 +50,11 @@ defmodule BTFinder do
   @doc """
   Check for bottlenecks
   """
+  def check() do
+    [current, last | _] = Enum.sort(BTFinder.list(), :desc)
+    check(current, last)
+  end
+
   def check(result1, result2) do
     {_key1, values1} = Cache.get(result1)
     {_key2, values2} = Cache.get(result2)
@@ -66,7 +71,8 @@ defmodule BTFinder do
 
         time2 ->
           diff_factor = if time1 > time2, do: time1 / safe(time2), else: time2 / safe(time1)
-          [{key, diff_factor}]
+          biggest_time = max(time1, time2)
+          [{key, round(diff_factor), round(biggest_time)}]
       end
     end)
     |> Enum.sort_by(&elem(&1, 1), &>=/2)
